@@ -1,5 +1,7 @@
 (working in progress)
 
+**WARNING I'm not a Haskeller, you must use this package carefully.**
+
 #(Training) Yesod Translatable plugin
 
 Yesod Web Framework plugin to manage translatable content.
