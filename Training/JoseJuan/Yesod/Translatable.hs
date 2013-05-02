@@ -1,6 +1,12 @@
-{-# LANGUAGE FlexibleInstances #-}
-{-# LANGUAGE RankNTypes #-}
-{-# LANGUAGE DeriveDataTypeable #-}
+{-# LANGUAGE QuasiQuotes
+           , TemplateHaskell
+           , TypeFamilies
+           , FlexibleInstances
+           , MultiParamTypeClasses
+           , FlexibleContexts
+           , GADTs
+           , RankNTypes
+           , DeriveDataTypeable #-}
 {-|
   Test 1
   Test 2
@@ -12,10 +18,15 @@
 -}
 module Training.JoseJuan.Yesod.Translatable
 ( module Training.JoseJuan.Yesod.Translatable.Routes
+, module Training.JoseJuan.Yesod.Translatable.Persistence
 , getTranslatable
 , getListLanguagesR
 , getTranslationR
 , postTranslationR
+, getTranslated
+, translate
+, translatable
+, TranslatableContentType (..)
 ) where
 
 import Prelude
@@ -28,13 +39,49 @@ import Yesod
 
 -- Subsite plugin
 instance YesodTranslatable master => YesodSubDispatch Translatable (HandlerT master IO) where
-    yesodSubDispatch = $(mkYesodSubDispatch resourcesTranslatable)
+  yesodSubDispatch = $(mkYesodSubDispatch resourcesTranslatable)
 
 type TranslatableHandler a = forall master. YesodTranslatable master => HandlerT Translatable (HandlerT master IO) a
 
 getTranslatable :: a -> Translatable
 getTranslatable = const Translatable
 
+
+_DEFAULT_ISOCODE :: Text
+_DEFAULT_ISOCODE = "en"
+
+
+-- Helpers for sites
+
+-- |Similar to _{MsgHello} but in realtime.
+translate termType termUID = do
+  (txt, msg) <- handlerToWidget $ getTranslated _DEFAULT_ISOCODE termType termUID
+  let txt' = T.concat [_DEFAULT_ISOCODE, ":", termType, ":", termUID]
+      msg' = if msg == "OK" then Nothing else Just msg
+  [whamlet|
+$maybe t <- txt
+  #{t}
+$nothing
+  $maybe m <- msg'
+    <span title=#{m}>
+      #{txt'}
+  $nothing
+    #{txt'}
+|]
+
+data TranslatableContentType = Editable | Updatable
+
+instance Show TranslatableContentType where
+  show Editable = "translatable"
+  show Updatable = "updatable"
+
+-- |Set a translatable content (editing mode).
+-- translatable :: (MonadWidget m, ToWidget (HandlerSite m) a) => TranslatableContentType -> Text -> Text -> m ()
+translatable :: TranslatableContentType -> Text -> Text -> WidgetT m IO ()
+translatable mode termType termUID = [whamlet|
+<span data-translatable=#{show mode} data-translatabletype=#{termType} data-translatableuid=#{termUID}>
+  &nbsp;
+|]
 
 -- Helpers
 
@@ -87,12 +134,7 @@ dbGetTermId _termType _termUID = do
 dbGetTranslated' _langId _termId = selectFirst [TranslatableTranslationLangId ==. _langId
                                                ,TranslatableTranslationTermId ==. _termId] []
 
-
-
-dbGetTranslated :: Text -> Text -> Text -> TranslatableHandler ( Maybe Text -- translation
-                                                               , Text)      -- status: OK, warning or error
-dbGetTranslated _isoCode _termType _termUID =
-  lift $
+getTranslated _isoCode _termType _termUID =
   runDB $
   do
     _langId <- dbGetLanguageId _isoCode
@@ -108,6 +150,13 @@ dbGetTranslated _isoCode _termType _termUID =
             Just (Entity _ _translation) -> return (Just $ translatableTranslationTranslation _translation, "OK")
   where fullUID = T.concat [_termType, ":", _termUID]
         formatMessage msg = T.concat [ _isoCode, ":", fullUID, ", ", msg]
+
+{-
+dbGetTranslated :: Text -> Text -> Text -> TranslatableHandler ( Maybe Text -- translation
+                                                               , Text -- OK, warning or error
+                                                               )
+-}
+dbGetTranslated _isoCode _termType _termUID = lift $ getTranslated _isoCode _termType _termUID
 
 
 dbSetTranslated :: Text -> Text -> Text -> Text -> TranslatableHandler Text -- "OK" or error

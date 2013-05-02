@@ -1,3 +1,4 @@
+{-# LANGUAGE QuasiQuotes, TemplateHaskell, TypeFamilies, FlexibleContexts, GADTs #-}
 module Training.JoseJuan.Yesod.Translatable.Persistence where
 
 import Prelude

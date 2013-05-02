@@ -1,4 +1,4 @@
-{-# LANGUAGE ConstraintKinds #-}
+{-# LANGUAGE QuasiQuotes, TemplateHaskell, TypeFamilies, FlexibleContexts, GADTs, ConstraintKinds #-}
 module Training.JoseJuan.Yesod.Translatable.Routes where
 
 import Prelude (IO)
