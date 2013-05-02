@@ -1,6 +1,15 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE DeriveDataTypeable #-}
+{-|
+  Test 1
+  Test 2
+  Test 3
+  Test 4
+  Test 5
+  http://www.haskell.org/haddock/doc/html/ch03s03.html
+  Test 6
+-}
 module Training.JoseJuan.Yesod.Translatable
 ( module Training.JoseJuan.Yesod.Translatable.Routes
 , getTranslatable
