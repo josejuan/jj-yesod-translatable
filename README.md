@@ -122,7 +122,7 @@ Use plugin into a scaffolded site is easy:
             <td>
               ^{translatable Editable "TERM_TYPE" "TERM_UID"}
 
-    Look three translatable methods:
+    Note three translatable methods:
     
     1.  Translating test in server runtime using `^{translate "ERM_TYPE" "TERM_UID"}`.
     1.  Enable updates on a translatable content in client runtime (editing mode) using `^{translatable Updatable "TERM_TYPE" "TERM_UID"}`.
