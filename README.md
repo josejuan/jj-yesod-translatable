@@ -105,7 +105,12 @@ Use plugin into a scaffolded site is easy:
         <table id=sample>
           <tr>
             <th colspan=2>
-              TRANSLATABLE CONTENT TYPE
+              TRANSLATABLE CONTENT TYPE:
+              <select onchange="$.translatable('lang', this.value); $.translatable('updateAll')">
+                <option value=en>
+                  English
+                <option value=es>
+                  Spanish
           <tr>
             <th>
               Translated at server runtime
@@ -129,7 +134,21 @@ Use plugin into a scaffolded site is easy:
     1.  Enable editions on a translatable content in client runtime (editing mode) using `^{translatable Editable "TERM_TYPE" "TERM_UID"}`.
 
     You can run and test.
-    
+
+#Work in progress
+
+This package is not usable satisfactorily, you can, but some behaviors will be added (I hope so):
+
+1. Set a properly way to get/select current language at server runtime (user session level).
+
+1. Set a properly way to grant access (and activate/deactivate) editing (translating) mode managing automaticaly client content representation (actually you must to switch between `translate` and `translatable` to set current mode, "viewing translation" or "editing translations").
+
+1. Cache translations at server runtime.
+
+1. Reduce todo list to install and use plugin.
+
+1. Populate automaticaly `TranslatableLang` entity using `message/en.msg` files using a compliant way.
+
     
 NOTES
 -----
