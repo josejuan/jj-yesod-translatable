@@ -32,15 +32,9 @@ Use plugin into a scaffolded site is easy:
 
 5.  you can add too the initialization process. Eg.:
 
-        <script type="text/javascript">
-        $(function() {
-            $.translatable({
-              langListReaderUrl: 'translatable/languagelist',
-              translatableReaderUrl: 'translatable',
-              translatableWriterUrl: 'translatable'
-            });
-        });
-        </script>
+        <script src="@{StaticR js_jQuery_translatable_haskell_js}" type="text/javascript"></script>
+    
+    these file is on jj-yesod-translatable project.
 
 6.  add jj-yesod-translatable library reference to you .cabal file:
 
