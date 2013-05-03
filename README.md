@@ -24,19 +24,26 @@ Use plugin into a scaffolded site is easy:
 
 3.  add [jQuery-translatable](https://raw.github.com/josejuan/jQuery-translatable "jQuery-translatable") plugin into "static/js" folder (eg. "static/js/jQuery-translatable.js"). Remember touch "Settings/StaticFiles.hs" if needed.
 
-4.  include script and jQuery scripts. Eg. adding to "templates/default-layout-wrapper.hamlet" into header:
+4.  add two resource files to your "static/css" directory:
 
-        <script src="http://code.jquery.com/jquery-1.9.1.js" type="text/javascript"></script>
-        <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js" type="text/javascript"></script>
-        <script src="@{StaticR js_jQuery_translatable_js}" type="text/javascript"></script>
+        * [edit button image](https://github.com/josejuan/jQuery-translatable/raw/master/css/edit.png "Edit button")
+        * [adapted css](https://github.com/josejuan/jQuery-translatable/raw/master/css/style.css "Adapted css")
 
-5.  you can add too the initialization process. Eg.:
+5.  include styles and jQuery scripts. Eg. adding to "templates/default-layout-wrapper.hamlet" into header:
 
-        <script src="@{StaticR js_jQuery_translatable_haskell_js}" type="text/javascript"></script>
+        <script src="http://code.jquery.com/jquery-1.9.1.js" type="text/javascript">
+        <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js" type="text/javascript">
+        <script src="@{StaticR js_jQuery_translatable_js}" type="text/javascript">
+        <link href="@{StaticR css_style_css}" media="all" rel="stylesheet" type="text/css">
+        <link href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" media="all" rel="stylesheet" type="text/css">
+
+6.  you can add too the initialization process. Eg.:
+
+        <script src="@{StaticR js_jQuery_translatable_haskell_js}" type="text/javascript">
     
     these file is on `jj-yesod-translatable` project.
 
-6.  add `jj-yesod-translatable` library reference to you .cabal file:
+7.  add `jj-yesod-translatable` library reference to your `.cabal` file:
 
         build-depends: base                          >= 4          && < 5
                      , yesod                         >= 1.2        && < 1.3
@@ -44,14 +51,14 @@ Use plugin into a scaffolded site is easy:
                          ...
                      , jj-yesod-translatable
 
-7.  create router to `jj-yesod-translatable` subsites to your config/routes. Eg.:
+8.  create router to `jj-yesod-translatable` subsites to your config/routes. Eg.:
 
         /static StaticR Static getStatic
         /auth   AuthR   Auth   getAuth
         /translatable TranslatableR Translatable getTranslatable
         ...
 
-8.  add to your Application.hs file
+9.  add to your Application.hs file
 
         import Training.JoseJuan.Yesod.Translatable
         ....
@@ -61,19 +68,25 @@ Use plugin into a scaffolded site is easy:
                 (Database.Persist.runPool dbconf (runMigration migrateTranslatable) p)
                 (messageLoggerSource foundation logger)
     
-8.  add to your Foundation.hs file. Eg.:
+10. add to your Foundation.hs file. Eg.:
 
         import Training.JoseJuan.Yesod.Translatable
         ...
         instance YesodTranslatable App where
 
-9.  migrate `jj-yesod-translatable` database (eg. running your scaffolded site).
+11. migrate `jj-yesod-translatable` database (eg. running your scaffolded site).
 
-10. insert your prefered languages into `translatable_lang` table. Eg.:
+12. insert your prefered languages into `translatable_lang` table. Eg.:
 
         $ sqlite3 your_project.sqlite3 "INSERT INTO translatable_lang (iso_code, name) VALUES ('en', 'English'), ('es', 'Spanish');"
 
-11. you can insert some translatable content with some like (eg. into "templates/homepage.hamlet")
+13. you can insert some translatable content with some like.
+
+    Eg. into "Handler/Home.hs":
+
+        import Training.JoseJuan.Yesod.Translatable
+
+    And into "templates/homepage.hamlet":
 
         <style>
           #sample {
@@ -109,8 +122,16 @@ Use plugin into a scaffolded site is easy:
               Editable at client runtime
             <td>
               ^{translatable Editable "TERM_TYPE" "TERM_UID"}
-              
 
+    Look three translatable methods:
+    
+        * Translating test in server runtime using `^{translate "ERM_TYPE" "TERM_UID"}`.
+        * Enable updates on a translatable content in client runtime (editing mode) using `^{translatable Updatable "TERM_TYPE" "TERM_UID"}`.
+        * Enable editions on a translatable content in client runtime (editing mode) using `^{translatable Editable "TERM_TYPE" "TERM_UID"}`.
+
+    You can run and test.
+    
+    
 NOTES
 -----
 
