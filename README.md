@@ -8,7 +8,7 @@ Yesod Web Framework plugin to manage translatable content.
 
 #How to
 
-##Install jj-yesod-translatable package
+##Install `jj-yesod-translatable` package
 
     $ git clone https://github.com/josejuan/jj-yesod-translatable.git
     $ cd jj-yesod-translatable
@@ -34,9 +34,9 @@ Use plugin into a scaffolded site is easy:
 
         <script src="@{StaticR js_jQuery_translatable_haskell_js}" type="text/javascript"></script>
     
-    these file is on jj-yesod-translatable project.
+    these file is on `jj-yesod-translatable` project.
 
-6.  add jj-yesod-translatable library reference to you .cabal file:
+6.  add `jj-yesod-translatable` library reference to you .cabal file:
 
         build-depends: base                          >= 4          && < 5
                      , yesod                         >= 1.2        && < 1.3
@@ -44,7 +44,7 @@ Use plugin into a scaffolded site is easy:
                          ...
                      , jj-yesod-translatable
 
-7.  create router to jj-yesod-translatable subsites to your config/routes. Eg.:
+7.  create router to `jj-yesod-translatable` subsites to your config/routes. Eg.:
 
         /static StaticR Static getStatic
         /auth   AuthR   Auth   getAuth
@@ -67,7 +67,7 @@ Use plugin into a scaffolded site is easy:
         ...
         instance YesodTranslatable App where
 
-9.  migrate jj-yesod-translatable database (eg. running your scaffolded site).
+9.  migrate `jj-yesod-translatable` database (eg. running your scaffolded site).
 
 10. insert your prefered languages into `translatable_lang` table. Eg.:
 
