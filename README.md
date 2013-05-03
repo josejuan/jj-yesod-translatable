@@ -25,7 +25,6 @@ Use plugin into a scaffolded site is easy:
 1.  add [jQuery-translatable](https://raw.github.com/josejuan/jQuery-translatable "jQuery-translatable") plugin into "static/js" folder (eg. "static/js/jQuery-translatable.js"). Remember touch "Settings/StaticFiles.hs" if needed.
 
 1.  add two resource files to your "static/css" directory:
-
     1.  [edit button image](https://github.com/josejuan/jQuery-translatable/raw/master/css/edit.png "Edit button").
     1.  [adapted css](https://github.com/josejuan/jQuery-translatable/raw/master/css/style.css "Adapted css").
 
@@ -125,9 +124,9 @@ Use plugin into a scaffolded site is easy:
 
     Look three translatable methods:
     
-        * Translating test in server runtime using `^{translate "ERM_TYPE" "TERM_UID"}`.
-        * Enable updates on a translatable content in client runtime (editing mode) using `^{translatable Updatable "TERM_TYPE" "TERM_UID"}`.
-        * Enable editions on a translatable content in client runtime (editing mode) using `^{translatable Editable "TERM_TYPE" "TERM_UID"}`.
+    1.  Translating test in server runtime using `^{translate "ERM_TYPE" "TERM_UID"}`.
+    1.  Enable updates on a translatable content in client runtime (editing mode) using `^{translatable Updatable "TERM_TYPE" "TERM_UID"}`.
+    1.  Enable editions on a translatable content in client runtime (editing mode) using `^{translatable Editable "TERM_TYPE" "TERM_UID"}`.
 
     You can run and test.
     
