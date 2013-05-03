@@ -26,8 +26,8 @@ Use plugin into a scaffolded site is easy:
 
 1.  add two resource files to your "static/css" directory:
 
-    1.  Image, [edit button image](https://github.com/josejuan/jQuery-translatable/raw/master/css/edit.png "Edit button").
-    1.  Style, [adapted css](https://github.com/josejuan/jQuery-translatable/raw/master/css/style.css "Adapted css").
+    -   Image, [edit button image](https://github.com/josejuan/jQuery-translatable/raw/master/css/edit.png "Edit button").
+    -   Style, [adapted css](https://github.com/josejuan/jQuery-translatable/raw/master/css/style.css "Adapted css").
 
 1.  include styles and jQuery scripts. Eg. adding to "templates/default-layout-wrapper.hamlet" into header:
 
