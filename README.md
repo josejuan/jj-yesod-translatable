@@ -32,58 +32,52 @@ Use plugin into a scaffolded site is easy:
 
 5.  you can add too the initialization process. Eg.:
 
-    <script type="text/javascript">
-    $(function() {
-        $.translatable({
-          langListReaderUrl: 'translatable/languagelist',
-          translatableReaderUrl: 'translatable',
-          translatableWriterUrl: 'translatable'
+        <script type="text/javascript">
+        $(function() {
+            $.translatable({
+              langListReaderUrl: 'translatable/languagelist',
+              translatableReaderUrl: 'translatable',
+              translatableWriterUrl: 'translatable'
+            });
         });
-    });
-    </script>
+        </script>
 
 6.  add jj-yesod-translatable library reference to you .cabal file:
 
-    build-depends: base                          >= 4          && < 5
-                 , yesod                         >= 1.2        && < 1.3
-                 , yesod-core                    >= 1.2        && < 1.3
-                     ...
-                 , jj-yesod-translatable
+        build-depends: base                          >= 4          && < 5
+                     , yesod                         >= 1.2        && < 1.3
+                     , yesod-core                    >= 1.2        && < 1.3
+                         ...
+                     , jj-yesod-translatable
 
 7.  create router to jj-yesod-translatable subsites to your config/routes. Eg.:
 
-    /static StaticR Static getStatic
-    /auth   AuthR   Auth   getAuth
-    /translatable TranslatableR Translatable getTranslatable
-    ...
+        /static StaticR Static getStatic
+        /auth   AuthR   Auth   getAuth
+        /translatable TranslatableR Translatable getTranslatable
+        ...
 
 8.  add to your Application.hs file
 
-    import Training.JoseJuan.Yesod.Translatable
-
-    ....
-
-    makeFoundation conf = do
-
-        ...
-
-        runLoggingT
-            (Database.Persist.runPool dbconf (runMigration migrateTranslatable) p)
-            (messageLoggerSource foundation logger)
+        import Training.JoseJuan.Yesod.Translatable
+        ....
+        makeFoundation conf = do
+            ...
+            runLoggingT
+                (Database.Persist.runPool dbconf (runMigration migrateTranslatable) p)
+                (messageLoggerSource foundation logger)
     
 8.  add to your Foundation.hs file. Eg.:
 
-    import Training.JoseJuan.Yesod.Translatable
-
-    ...
-    
-    instance YesodTranslatable App where
+        import Training.JoseJuan.Yesod.Translatable
+        ...
+        instance YesodTranslatable App where
 
 9.  migrate jj-yesod-translatable database (eg. running your scaffolded site).
 
 10. insert your prefered languages into `translatable_lang` table. Eg.:
 
-    $ sqlite3 your_project.sqlite3 "INSERT INTO translatable_lang (iso_code, name) VALUES ('en', 'English'), ('es', 'Spanish');"
+        $ sqlite3 your_project.sqlite3 "INSERT INTO translatable_lang (iso_code, name) VALUES ('en', 'English'), ('es', 'Spanish');"
 
 11. you can insert some translatable content with some like (eg. into "templates/homepage.hamlet")
 
