@@ -1,6 +1,6 @@
 (working in progress)
 
-**WARNING I'm not a Haskeller (I'm a rookie Haskeller), you must use this package carefully.
+** WARNING I'm not a Haskeller (I'm a rookie Haskeller), you must use this package carefully **
 
 #(Training) Yesod Translatable plugin
 
