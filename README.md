@@ -58,7 +58,7 @@ Use plugin into a scaffolded site is easy:
                          ...
                      , jj-yesod-translatable
 
-1.  create router to `jj-yesod-translatable` subsites to your config/routes. Eg.:
+1.  create route to `jj-yesod-translatable` subsites to your config/routes. Eg.:
 
         /static StaticR Static getStatic
         /auth   AuthR   Auth   getAuth
@@ -137,7 +137,7 @@ Use plugin into a scaffolded site is easy:
 
     Note three translatable methods:
     
-    1.  Translating test in server runtime using `^{translate "ERM_TYPE" "TERM_UID"}`.
+    1.  Translating text in server runtime using `^{translate "ERM_TYPE" "TERM_UID"}`.
     1.  Enable updates on a translatable content in client runtime (editing mode) using `^{translatable Updatable "TERM_TYPE" "TERM_UID"}`.
     1.  Enable editions on a translatable content in client runtime (editing mode) using `^{translatable Editable "TERM_TYPE" "TERM_UID"}`.
 
@@ -157,6 +157,7 @@ This package is not usable satisfactorily, you can, but some behaviors will be a
 
 1. Populate automaticaly `TranslatableLang` entity using `message/en.msg` files using a compliant way.
 
+1. Remove public access on writable (POST) REST method and set some privilege role.
     
 NOTES
 -----
