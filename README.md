@@ -26,9 +26,9 @@ Use plugin into a scaffolded site is easy:
 
 4.  include script and jQuery scripts. Eg. adding to "templates/default-layout-wrapper.hamlet" into header:
 
-    <script src="http://code.jquery.com/jquery-1.9.1.js" type="text/javascript"></script>
-    <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js" type="text/javascript"></script>
-    <script src="@{StaticR js_jQuery_translatable_js}" type="text/javascript"></script>
+        <script src="http://code.jquery.com/jquery-1.9.1.js" type="text/javascript"></script>
+        <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js" type="text/javascript"></script>
+        <script src="@{StaticR js_jQuery_translatable_js}" type="text/javascript"></script>
 
 5.  you can add too the initialization process. Eg.:
 
