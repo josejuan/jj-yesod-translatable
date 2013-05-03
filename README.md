@@ -6,6 +6,14 @@
 
 Yesod Web Framework plugin to manage translatable content.
 
+To get one application in internationalized many languages (English, Spanish, ...) frameworks provide explicit mechanism to translate translatable content.
+
+Most common way is to define a resource with translated content but is not commonly provide a comfortable way that users can translate that content.
+
+The most important thing when a user translate some text is `the context` where there is it.
+
+I hope this plugin provides to Yesod Web Framework a possible way to do it.
+
 #How to
 
 ##Install `jj-yesod-translatable` package
