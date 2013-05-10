@@ -147,7 +147,7 @@ Use plugin into a scaffolded site is easy:
 
 This package is not usable satisfactorily, you can, but some behaviors will be added (I hope so):
 
-1. Set a properly way to get/select current language at server runtime (user session level).
+1. <strike>Set</strike> <s>a</s> <del>properly</del> way to get/select current language at server runtime (user session level).
 
 1. Set a properly way to grant access (and activate/deactivate) editing (translating) mode managing automaticaly client content representation (actually you must to switch between `translate` and `translatable` to set current mode, "viewing translation" or "editing translations").
 
