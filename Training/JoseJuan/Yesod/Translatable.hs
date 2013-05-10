@@ -31,7 +31,10 @@ import Data.Text (Text)
 import qualified Data.Text as T
 import Training.JoseJuan.Yesod.Translatable.Routes
 import Training.JoseJuan.Yesod.Translatable.Persistence
+import Training.JoseJuan.Yesod.Translatable.Internal.Cached
 import Yesod
+import Data.Typeable
+import Data.IORef
 
 -- Subsite plugin
 instance YesodTranslatable master => YesodSubDispatch Translatable (HandlerT master IO) where
@@ -42,17 +45,16 @@ type TranslatableHandler a = forall master. YesodTranslatable master => HandlerT
 getTranslatable :: a -> Translatable
 getTranslatable = const Translatable
 
-
-_DEFAULT_ISOCODE :: Text
-_DEFAULT_ISOCODE = "en"
-
+_TRANSLATABLE_jsISO_LANG :: Text
+_TRANSLATABLE_jsISO_LANG = "_TRANSLATABLE_jsISO_LANG"
 
 -- Helpers for sites
 
 -- |Similar to _{MsgHello} but in realtime.
 translate termType termUID = do
-  (txt, msg) <- handlerToWidget $ getTranslated _DEFAULT_ISOCODE termType termUID
-  let txt' = T.concat [_DEFAULT_ISOCODE, ":", termType, ":", termUID]
+  lang <- handlerToWidget $ isoCode
+  (txt, msg) <- handlerToWidget $ getTranslated lang termType termUID
+  let txt' = T.concat [lang, ":", termType, ":", termUID]
       msg' = if msg == "OK" then Nothing else Just msg
   [whamlet|
 $maybe t <- txt
@@ -71,10 +73,17 @@ instance Show TranslatableContentType where
   show Editable = "translatable"
   show Updatable = "updatable"
 
+newtype TranslatableLangJSIncluded = TranslatableLangJSIncluded { unTranslatableLangJSIncluded :: IORef Bool } deriving Typeable
+
 -- |Set a translatable content (editing mode).
--- translatable :: (MonadWidget m, ToWidget (HandlerSite m) a) => TranslatableContentType -> Text -> Text -> m ()
-translatable :: TranslatableContentType -> Text -> Text -> WidgetT m IO ()
-translatable mode termType termUID = [whamlet|
+translatable :: YesodTranslatable m => TranslatableContentType -> Text -> Text -> WidgetT m IO ()
+translatable mode termType termUID = do
+  lang <- handlerToWidget $ isoCode
+  langJs <- firstCached unTranslatableLangJSIncluded TranslatableLangJSIncluded
+  if langJs
+    then toWidget [julius|_TRANSLATABLE_jsISO_LANG = #{toJSON lang}|]
+    else return ()
+  [whamlet|
 <span data-translatable=#{show mode} data-translatabletype=#{termType} data-translatableuid=#{termUID}>
   &nbsp;
 |]
