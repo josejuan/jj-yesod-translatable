@@ -22,6 +22,8 @@ module Training.JoseJuan.Yesod.Translatable
 , getTranslated
 , translate
 , translatable
+, translatable'
+, translatableEditable
 , TranslatableContentType (..)
 ) where
 
@@ -51,9 +53,10 @@ _TRANSLATABLE_jsISO_LANG = "_TRANSLATABLE_jsISO_LANG"
 -- Helpers for sites
 
 -- |Similar to _{MsgHello} but in realtime.
+translate :: YesodTranslatable m => Text -> Text -> WidgetT m IO ()
 translate termType termUID = do
-  lang <- handlerToWidget $ isoCode
-  (txt, msg) <- handlerToWidget $ getTranslated lang termType termUID
+  lang <- liftHandlerT $ isoCode
+  (txt, msg) <- liftHandlerT $ getTranslated lang termType termUID
   let txt' = T.concat [lang, ":", termType, ":", termUID]
       msg' = if msg == "OK" then Nothing else Just msg
   [whamlet|
@@ -76,8 +79,8 @@ instance Show TranslatableContentType where
 newtype TranslatableLangJSIncluded = TranslatableLangJSIncluded { unTranslatableLangJSIncluded :: IORef Bool } deriving Typeable
 
 -- |Set a translatable content (editing mode).
-translatable :: YesodTranslatable m => TranslatableContentType -> Text -> Text -> WidgetT m IO ()
-translatable mode termType termUID = do
+translatableEditable :: YesodTranslatable m => TranslatableContentType -> Text -> Text -> WidgetT m IO ()
+translatableEditable mode termType termUID = do
   lang <- handlerToWidget $ isoCode
   langJs <- firstCached unTranslatableLangJSIncluded TranslatableLangJSIncluded
   if langJs
@@ -87,6 +90,24 @@ translatable mode termType termUID = do
 <span data-translatable=#{show mode} data-translatabletype=#{termType} data-translatableuid=#{termUID}>
   &nbsp;
 |]
+
+translatableWithMode :: YesodTranslatable m => TranslatableContentType -> Text -> Text -> WidgetT m IO ()
+translatableWithMode mode termType termUID = do
+  isEditingModeEnabled <- liftHandlerT $ editingModeEnabled
+  if isEditingModeEnabled
+    then translatableEditable mode termType termUID
+    else translate            termType termUID
+
+-- |Set a translatable content changing between "updatable on editing mode"
+--  and "translating mode" autmatically using "_TRANSLATABLE_MODE" session state.
+translatable :: YesodTranslatable m => Text -> Text -> WidgetT m IO ()
+translatable termType termUID = translatableWithMode Updatable termType termUID
+
+-- |Set a translatable content changing between "editable on editing mode"
+--  and "translating mode" autmatically using "_TRANSLATABLE_MODE" session state.
+translatable' :: YesodTranslatable m => Text -> Text -> WidgetT m IO ()
+translatable' termType termUID = translatableWithMode Editable termType termUID
+
 
 -- Helpers
 

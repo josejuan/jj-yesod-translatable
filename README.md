@@ -149,7 +149,7 @@ This package is not usable satisfactorily, you can, but some behaviors will be a
 
 1. <del>Set a properly way to get/select current language at server runtime (user session level)</del>. Now supported using `languages`.
 
-1. Set a properly way to grant access (and activate/deactivate) editing (translating) mode managing automaticaly client content representation (actually you must to switch between `translate` and `translatable` to set current mode, "viewing translation" or "editing translations").
+1. <del>Set a properly way to grant access (and activate/deactivate) editing (translating) mode managing automaticaly client content representation (actually you must to switch between `translate` and `translatable` to set current mode, "viewing translation" or "editing translations")</del>. Now supported using `enableEditingMode`, `disableEditingMode` and `editingModeEnabled`.
 
 1. Cache translations at server runtime.
 
