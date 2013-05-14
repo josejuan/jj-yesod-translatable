@@ -157,7 +157,7 @@ This package is not usable satisfactorily, you can, but some behaviors will be a
 
 1. Populate automaticaly `TranslatableLang` entity using `message/en.msg` files using a compliant way.
 
-1. Remove public access on writable (POST) REST method and set some privilege role.
+1. <del>Remove public access on writable (POST) REST method and set some privilege role.</del> Now supported using `canTranslate`.
     
 NOTES
 -----

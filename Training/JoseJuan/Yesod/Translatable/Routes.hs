@@ -39,6 +39,9 @@ class (Yesod master, YesodTranslatablePersist master) => YesodTranslatable maste
     -- |Prefered default language
     isoCode :: HandlerT master IO Text
     isoCode = languages >>= return . T.take 2 . head
+    
+    -- |User can translate some content under certain termType
+    canTranslate :: Text -> HandlerT master IO Bool
 
 mkYesodSubData "Translatable" [parseRoutes|
 /languagelist ListLanguagesR GET

@@ -186,23 +186,28 @@ dbGetTranslated _isoCode _termType _termUID = lift $ getTranslated _isoCode _ter
 
 
 dbSetTranslated :: Text -> Text -> Text -> Text -> TranslatableHandler Text -- "OK" or error
-dbSetTranslated _isoCode _termType _termUID translation =
-  lift $
-  runDB $
-  do
-    _langId <- dbGetLanguageId _isoCode
-    _termId <- dbGetTermId _termType _termUID
-    if isNothing _langId
-      then return $ formatMessage "language not found!"
-      else
-        do
-          let _langId' = fromJust _langId
-          _termId' <- if isNothing _termId then insert $ TranslatableTerm _termType _termUID
-                                           else return $ fromJust _termId
-          _translation <- dbGetTranslated' _langId' _termId'
-          if not (isNothing _translation) then delete $ entityKey $ fromJust $ _translation
-                                          else return ()
-          insert $ TranslatableTranslation _langId' _termId' translation
-          return "OK"
+dbSetTranslated _isoCode _termType _termUID translation = do
+  lift $ do
+    canwrite <- canTranslate _termType
+    if not canwrite
+     then
+      return $ T.concat ["You do not have permission to write termType '", _termType]
+     else  
+      runDB $
+      do
+        _langId <- dbGetLanguageId _isoCode
+        _termId <- dbGetTermId _termType _termUID
+        if isNothing _langId
+          then return $ formatMessage "language not found!"
+          else
+            do
+              let _langId' = fromJust _langId
+              _termId' <- if isNothing _termId then insert $ TranslatableTerm _termType _termUID
+                                               else return $ fromJust _termId
+              _translation <- dbGetTranslated' _langId' _termId'
+              if not (isNothing _translation) then delete $ entityKey $ fromJust $ _translation
+                                              else return ()
+              insert $ TranslatableTranslation _langId' _termId' translation
+              return "OK"
   where fullUID = T.concat [_termType, ":", _termUID]
         formatMessage msg = T.concat [ _isoCode, ":", fullUID, ", ", msg]
