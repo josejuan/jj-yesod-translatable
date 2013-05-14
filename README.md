@@ -145,7 +145,7 @@ Use plugin into a scaffolded site is easy:
 
 #Work in progress
 
-This package is not usable satisfactorily, you can, but some behaviors will be added (I hope so):
+This package is <del>not</del> usable <del>satisfactorily, you can</del>, but some behaviors will be added (I hope so):
 
 1. <del>Set a properly way to get/select current language at server runtime (user session level)</del>. Now supported using `languages`.
 
