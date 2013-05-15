@@ -34,7 +34,6 @@ import qualified Data.Text as T
 import Training.JoseJuan.Yesod.Translatable.Routes
 import Training.JoseJuan.Yesod.Translatable.Persistence
 import Training.JoseJuan.Yesod.Translatable.Internal.Cached
-import Training.JoseJuan.Yesod.Translatable.Internal.AppCache
 import Yesod
 import Data.Typeable
 import Data.IORef
@@ -196,20 +195,20 @@ dbGetTranslated :: Text -> Text -> Text -> TranslatableHandler ( Maybe Text -- t
 dbGetTranslated _isoCode _termType _termUID = lift $ getTranslated _isoCode _termType _termUID
 getTranslated _isoCode _termType _termUID = do
   do
-    txt <- liftIO $ translatableGetCached _isoCode _termType _termUID
+    txt <- getCached _isoCode _termType _termUID
     case txt of
       Just txt' -> return (Just txt', _OK)
       Nothing   -> do
                      translation <- getTranslated_uncached _isoCode _termType _termUID
                      case translation of
-                       (Just txt'', _) -> liftIO $ translatableSetCached _isoCode _termType _termUID txt''
+                       (Just txt'', _) -> setCached _isoCode _termType _termUID txt''
                        _               -> return ()
                      return translation
 
 dbSetTranslated :: Text -> Text -> Text -> Text -> TranslatableHandler Text -- _OK or error
 dbSetTranslated _isoCode _termType _termUID translation = do
-  liftIO $ translatableSetCached _isoCode _termType _termUID translation
   lift $ do
+    setCached _isoCode _termType _termUID translation
     runDB $
       do
         _langId <- dbGetLanguageId _isoCode

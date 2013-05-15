@@ -151,7 +151,7 @@ This package is <del>not</del> usable <del>satisfactorily, you can</del>, but so
 
 1. <del>Set a properly way to grant access (and activate/deactivate) editing (translating) mode managing automaticaly client content representation (actually you must to switch between `translate` and `translatable` to set current mode, "viewing translation" or "editing translations")</del>. Now supported using `enableEditingMode`, `disableEditingMode` and `editingModeEnabled`.
 
-1. <del>Cache translations at server runtime.</del> Now supported internally using `IORef (TVar (M.Map k a))`, we must wait to a better solution.
+1. <del>Cache translations at server runtime.</del> Now supported internally using `IORef (TVar (M.Map k a))`, we must wait to a better solution. You can override that behavior overloading `getCached` and `setCached` (`YesodTranslatable` methods).
 
 1. <del>Remove public access on writable (POST) REST method and set some privilege role.</del> Now supported using `canTranslate`.
 

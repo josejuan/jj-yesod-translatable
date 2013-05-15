@@ -6,6 +6,7 @@ import Yesod
 import Data.Text (Text)
 import qualified Data.Text as T
 import Training.JoseJuan.Yesod.Translatable.Persistence
+import Training.JoseJuan.Yesod.Translatable.Internal.AppCache
 import qualified Data.Map as M
 import Data.Maybe (isNothing)
 
@@ -42,6 +43,17 @@ class (Yesod master, YesodTranslatablePersist master) => YesodTranslatable maste
     
     -- |User can translate some content under certain termType
     canTranslate :: Text -> HandlerT master IO Bool
+
+    -- |Used to bypass "inprocess" memory translations cache
+    getCached :: Text -> Text -> Text -> HandlerT master IO (Maybe Text)
+    getCached isoCode termType termUID =
+      liftIO $ translatableGetCached isoCode termType termUID
+
+    -- |Used to bypass "inprocess" memory translations cache
+    setCached :: Text -> Text -> Text -> Text -> HandlerT master IO ()
+    setCached isoCode termType termUID translation =
+      liftIO $ translatableSetCached isoCode termType termUID translation
+
 
 mkYesodSubData "Translatable" [parseRoutes|
 /languagelist ListLanguagesR GET
