@@ -156,6 +156,8 @@ This package is <del>not</del> usable <del>satisfactorily, you can</del>, but so
 1. <del>Remove public access on writable (POST) REST method and set some privilege role.</del> Now supported using `canTranslate`.
 
 Others non critical tasks could be:
+
+1. Refactor, clarify, ... the chaos.
     
 1. Reduce todo list to install and use plugin.
 
