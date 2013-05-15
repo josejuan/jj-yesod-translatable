@@ -6,7 +6,7 @@
 
 Yesod Web Framework plugin to manage translatable content.
 
-To get one application in internationalized many languages (English, Spanish, ...) frameworks provide explicit mechanism to translate translatable content.
+To get one application internationalized in many languages (English, Spanish, ...) frameworks provide explicit mechanism to translate translatable content.
 
 Most common way is to define a resource with translated content but is not commonly provide a comfortable way that users can translate that content.
 
@@ -26,15 +26,15 @@ I hope this plugin provides to Yesod Web Framework a possible way to do it.
 
 Use plugin into a scaffolded site is easy:
 
-1.  create scaffolded site.
+1.  create scaffolded site (eg. `yesod init && cd myProject`).
 
-1.  create "static/js" folder (if not exists).
+1.  create "static/js" folder (if not exists, eg. `mkdir static/js`).
 
-1.  add [jQuery-translatable](https://raw.github.com/josejuan/jQuery-translatable "jQuery-translatable") plugin into "static/js" folder (eg. "static/js/jQuery-translatable.js"). Remember touch "Settings/StaticFiles.hs" if needed.
+1.  add [jQuery-translatable](https://github.com/josejuan/jQuery-translatable "jQuery-translatable") plugin into "static/js" folder (eg. `wget https://github.com/josejuan/jQuery-translatable/raw/master/jQuery-translatable.js -O static/js/jQuery-translatable.js`). Remember touch "Settings/StaticFiles.hs" if needed.
 
 1.  add two resource files to your "static/css" directory:
-    1.  [edit button image](https://github.com/josejuan/jQuery-translatable/raw/master/css/edit.png "Edit button").
-    1.  [adapted css](https://github.com/josejuan/jQuery-translatable/raw/master/css/style.css "Adapted css").
+    1.  [edit button image](https://github.com/josejuan/jQuery-translatable/raw/master/css/edit.png "Edit button"). (eg. `wget https://github.com/josejuan/jQuery-translatable/raw/master/css/edit.png -O static/css/edit.png`).
+    1.  [adapted css](https://github.com/josejuan/jQuery-translatable/raw/master/css/style.css "Adapted css"). (eg. `wget https://github.com/josejuan/jQuery-translatable/raw/master/css/style.css -O static/css/style.css`).
 
 1.  include styles and jQuery scripts. Eg. adding to "templates/default-layout-wrapper.hamlet" into header:
 
@@ -44,11 +44,13 @@ Use plugin into a scaffolded site is easy:
         <link href="@{StaticR css_style_css}" media="all" rel="stylesheet" type="text/css">
         <link href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" media="all" rel="stylesheet" type="text/css">
 
-1.  you can add too the initialization process. Eg.:
+1.  you can add too the initialization process (in that hamlet file). Eg.:
 
         <script src="@{StaticR js_jQuery_translatable_haskell_js}" type="text/javascript">
     
-    these file is on `jj-yesod-translatable` project.
+    these file is on `jj-yesod-translatable` project. (eg. `wget https://github.com/josejuan/jj-yesod-translatable/raw/master/js/jQuery-translatable-haskell.js -O static/js/jQuery-translatable-haskell.js`).
+
+1.  for testing purposes you can include a complete handler showing translatable widgets in action. (eg. ).
 
 1.  add `jj-yesod-translatable` library reference to your `.cabal` file:
 
