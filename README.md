@@ -169,6 +169,8 @@ It is the simplest mode, you simply put (into a hamlet template) the text key:
 
 These text only will be translated at server runtime and ever will be translated using *"editing mode"*.
 
+You can use `translate` if you are sure that texts will not be edited here.
+
 If you want set a *"translatable text"*, that is, one granted user can translate it, then use a little variation in your hamlet template
 
     <ul>
@@ -177,6 +179,12 @@ If you want set a *"translatable text"*, that is, one granted user can translate
       <li>^{translate' "Greetings" "Hi"}
 
 Now, when *"editing mode"* will be activated (and user will be granted) these texts will be translated (and editable) at client runtime.
+
+You can use `translate'` if you are want to allow edit these texts here.
+
+###Editing mode
+
+I'm sleeping now, be patient please...
 
 #Work in progress
 
