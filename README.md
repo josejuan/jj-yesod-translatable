@@ -139,7 +139,12 @@ Use plugin into a scaffolded site is easy (looks like verbose but is very detail
 
 1.  insert your prefered languages into `translatable_lang` table. Eg.:
 
-        $ sqlite3 your_project.sqlite3 "INSERT INTO translatable_lang (iso_code, name) VALUES ('en', 'English'), ('es', 'Spanish');"
+        $ sqlite3 \
+            your_project.sqlite3 \
+                "INSERT INTO translatable_lang \
+                    ( iso_code, name     ) VALUES \
+                    ( 'en'    , 'English'), \
+                    ( 'es'    , 'Spanish');"
 
 1.  now, if has included `TranslatableTest.hs`, you can see a demo page at [http://localhost:8181/test](http://localhost:8181/test "Test page").
 
