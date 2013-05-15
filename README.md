@@ -24,7 +24,7 @@ I hope this plugin provides to Yesod Web Framework a possible way to do it.
 
 ##Use plugin
 
-Use plugin into a scaffolded site is easy:
+Use plugin into a scaffolded site is easy (looks like verbose but is very detailed):
 
 1.  create scaffolded site (eg. `yesod init && cd myProject`).
 
@@ -50,7 +50,7 @@ Use plugin into a scaffolded site is easy:
     
     these file is on `jj-yesod-translatable` project. (eg. `wget https://github.com/josejuan/jj-yesod-translatable/raw/master/js/jQuery-translatable-haskell.js -O static/js/jQuery-translatable-haskell.js`).
 
-1.  for testing purposes you can include a complete handler showing translatable widgets in action. (eg. ).
+1.  for testing purposes you can include a complete handler showing translatable widgets in action. (eg. `wget https://github.com/josejuan/jj-yesod-translatable/raw/master/test/TranslatableTest.hs -O Handler/TranslatableTest.hs`).
 
 1.  add `jj-yesod-translatable` library reference to your `.cabal` file:
 
@@ -60,12 +60,30 @@ Use plugin into a scaffolded site is easy:
                          ...
                      , jj-yesod-translatable
 
+1.  if has included `TranslatableTest.hs` expose that module too 
+
+        exposed-modules: Application
+                         Foundation
+                         ...
+                         Handler.Home
+                         ...
+                         Handler.TranslatableTest
+
 1.  create route to `jj-yesod-translatable` subsites to your config/routes. Eg.:
 
         /static StaticR Static getStatic
         /auth   AuthR   Auth   getAuth
         /translatable TranslatableR Translatable getTranslatable
         ...
+
+1.  if has included `TranslatableTest.hs` set testing router too
+
+        / HomeR GET POST
+        ...
+        /test TranslatableTestR GET
+        /enableEdit EnableEditingModeR GET
+        /disableEdit DisableEditingModeR GET
+        /lang/#Text SetlanguageR GET
 
 1.  add to your Application.hs file
 
@@ -76,66 +94,31 @@ Use plugin into a scaffolded site is easy:
             runLoggingT
                 (Database.Persist.runPool dbconf (runMigration migrateTranslatable) p)
                 (messageLoggerSource foundation logger)
+
+1.  if has included `TranslatableTest.hs` include testing handler too
+
+        import Handler.Home
+        ...
+        import Handler.TranslatableTest
     
-1.  add to your Foundation.hs file. Eg.:
+1.  add to your Foundation.hs file the minimal `YesodTranslatable` instance. Eg.:
 
         import Training.JoseJuan.Yesod.Translatable
         ...
         instance YesodTranslatable App where
+          canTranslate _ = return True
 
-1.  migrate `jj-yesod-translatable` database (eg. running your scaffolded site).
+1.  if has included `TranslatableTest.hs` include `Data.Text` reference too
+
+        import Data.Text
+
+1.  migrate `jj-yesod-translatable` database (eg. running your scaffolded site doing `yesod devel --port 8181`).
 
 1.  insert your prefered languages into `translatable_lang` table. Eg.:
 
         $ sqlite3 your_project.sqlite3 "INSERT INTO translatable_lang (iso_code, name) VALUES ('en', 'English'), ('es', 'Spanish');"
 
-1.  you can insert some translatable content with some like.
-
-    Eg. into "Handler/Home.hs":
-
-        import Training.JoseJuan.Yesod.Translatable
-
-    And into "templates/homepage.hamlet":
-
-        <style>
-          #sample {
-            border-collapse: collapse;
-            font-size: 20px;
-          }
-          #sample th {
-            border: 1px solid black;
-            text-align: left;
-            padding: 10px;
-            background-color: #f0f0f0;
-          }
-          #sample td {
-            border: 1px solid black;
-            padding: 10px;
-          }
-        <table id=sample>
-          <tr>
-            <th colspan=2>
-              TRANSLATABLE CONTENT TYPE:
-              <select onchange="$.translatable('lang', this.value); $.translatable('updateAll')">
-                <option value=en>
-                  English
-                <option value=es>
-                  Spanish
-          <tr>
-            <th>
-              Translated at server runtime
-            <td>
-              ^{translate "TERM_TYPE" "TERM_UID"}
-          <tr>
-            <th>
-              Translated at client runtime
-            <td>
-              ^{translatable Updatable "TERM_TYPE" "TERM_UID"}
-          <tr>
-            <th>
-              Editable at client runtime
-            <td>
-              ^{translatable Editable "TERM_TYPE" "TERM_UID"}
+1.  now, if has included `TranslatableTest.hs`, you can see a demo page at [http://localhost:8181/test](http://localhost:8181/test "Test page").
 
     Note three translatable methods:
     
