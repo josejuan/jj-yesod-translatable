@@ -142,19 +142,21 @@ Use plugin into a scaffolded site is easy (looks like verbose but is very detail
         $ sqlite3 \
             your_project.sqlite3 \
                 "INSERT INTO translatable_lang \
-                    ( iso_code, name     ) VALUES \
-                    ( 'en'    , 'English'), \
-                    ( 'es'    , 'Spanish');"
+                    ( iso_code, name      ) VALUES \
+                    ( 'en'    , 'English' ), \
+                    ( 'es'    , 'Spanish' );"
 
 1.  now, if has included `TranslatableTest.hs`, you can see a demo page at [http://localhost:8181/test](http://localhost:8181/test "Test page").
 
-    Note three translatable methods:
-    
-    1.  Translating text in server runtime using `^{translate "ERM_TYPE" "TERM_UID"}`.
-    1.  Enable updates on a translatable content in client runtime (editing mode) using `^{translatable Updatable "TERM_TYPE" "TERM_UID"}`.
-    1.  Enable editions on a translatable content in client runtime (editing mode) using `^{translatable Editable "TERM_TYPE" "TERM_UID"}`.
+##Understanding plugin
 
-    You can run and test.
+###Translation modes and plugin workflow
+
+Plugin could run in two modes:
+
+1. **"translation mode"**, in that mode, plugin write out only pure plain translated text using active language. Final users will see only a normal web page.
+
+1. **"editing mode"**, in that mode, plugin write out specific **HTML5** markup to be able edit text translations to a specific user (the translator).
 
 #Work in progress
 
