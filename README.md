@@ -152,11 +152,31 @@ Use plugin into a scaffolded site is easy (looks like verbose but is very detail
 
 ###Translation modes and plugin workflow
 
-Plugin could run in two modes:
+Plugin can operator in two ways:
 
 1. **"translation mode"**, in that mode, plugin write out only pure plain translated text using active language. Final users will see only a normal web page.
 
-1. **"editing mode"**, in that mode, plugin write out specific **HTML5** markup to be able edit text translations to a specific user (the translator).
+1. **"editing mode"**, in that mode, plugin write out specific **HTML5** markup to be able edit text translations. You can grant translate to specific users (the translators). Too, you can restrict who can translate certain texts.
+
+###Translation mode
+
+It is the simplest mode, you simply put (into a hamlet template) the text key:
+
+    <ul>
+      <li>^{translate "Greetings" "Hello World!"}
+      <li>^{translate "Greetings" "Hello"}
+      <li>^{translate "Greetings" "Hi"}
+
+These text only will be translated at server runtime and ever will be translated using *"editing mode"*.
+
+If you want set a *"translatable text"*, that is, one granted user can translate it, then use a little variation in your hamlet template
+
+    <ul>
+      <li>^{translate' "Greetings" "Hello World!"}
+      <li>^{translate' "Greetings" "Hello"}
+      <li>^{translate' "Greetings" "Hi"}
+
+Now, when *"editing mode"* will be activated (and user will be granted) these texts will be translated at client runtime.
 
 #Work in progress
 
