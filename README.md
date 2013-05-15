@@ -30,7 +30,13 @@ Use plugin into a scaffolded site is easy (looks like verbose but is very detail
 
 1.  create "static/js" folder (if not exists, eg. `mkdir static/js`).
 
-1.  add [jQuery-translatable](https://github.com/josejuan/jQuery-translatable "jQuery-translatable") plugin into "static/js" folder (eg. `wget https://github.com/josejuan/jQuery-translatable/raw/master/jQuery-translatable.js -O static/js/jQuery-translatable.js`). Remember touch "Settings/StaticFiles.hs" if needed.
+1.  add [jQuery-translatable](https://github.com/josejuan/jQuery-translatable "jQuery-translatable") plugin into "static/js" folder. Eg.
+
+        wget \
+          https://github.com/josejuan/jQuery-translatable/raw/master/jQuery-translatable.js \
+          -O static/js/jQuery-translatable.js
+
+    Remember touch "Settings/StaticFiles.hs" if needed.
 
 1.  add two resource files to your "static/css" directory:
     1.  [edit button image](https://github.com/josejuan/jQuery-translatable/raw/master/css/edit.png "Edit button"). (eg. `wget https://github.com/josejuan/jQuery-translatable/raw/master/css/edit.png -O static/css/edit.png`).
