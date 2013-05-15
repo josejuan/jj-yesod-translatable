@@ -34,6 +34,7 @@ import qualified Data.Text as T
 import Training.JoseJuan.Yesod.Translatable.Routes
 import Training.JoseJuan.Yesod.Translatable.Persistence
 import Training.JoseJuan.Yesod.Translatable.Internal.Cached
+import Training.JoseJuan.Yesod.Translatable.Internal.AppCache
 import Yesod
 import Data.Typeable
 import Data.IORef
@@ -50,6 +51,9 @@ getTranslatable = const Translatable
 _TRANSLATABLE_jsISO_LANG :: Text
 _TRANSLATABLE_jsISO_LANG = "_TRANSLATABLE_jsISO_LANG"
 
+_OK :: Text
+_OK = "OK"
+
 -- Helpers for sites
 
 -- |Similar to _{MsgHello} but in realtime.
@@ -58,7 +62,7 @@ translate termType termUID = do
   lang <- liftHandlerT $ isoCode
   (txt, msg) <- liftHandlerT $ getTranslated lang termType termUID
   let txt' = T.concat [lang, ":", termType, ":", termUID]
-      msg' = if msg == "OK" then Nothing else Just msg
+      msg' = if msg == _OK then Nothing else Just msg
   [whamlet|
 $maybe t <- txt
   #{t}
@@ -135,9 +139,16 @@ getTranslationR _isoCode _termType _termUID = do
 
 postTranslationR :: Text -> Text -> Text -> TranslatableHandler Value
 postTranslationR _isoCode _termType _termUID = do
-  translation <- lift $ parseJsonBody_
-  result <- dbSetTranslated _isoCode _termType _termUID translation
-  jsonToRepJson $ object [("result", toJSON result)]
+  canwrite <- lift $ canTranslate _termType
+  result' <- if not canwrite
+               then
+                 return $ T.concat ["You do not have permission to write termType '", _termType]
+               else
+                 do
+                   translation <- lift $ parseJsonBody_
+                   result <- dbSetTranslated _isoCode _termType _termUID translation
+                   return result
+  jsonToRepJson $ object [("result", toJSON result')]
 
 -- Persistence
 
@@ -160,7 +171,7 @@ dbGetTermId _termType _termUID = do
 dbGetTranslated' _langId _termId = selectFirst [TranslatableTranslationLangId ==. _langId
                                                ,TranslatableTranslationTermId ==. _termId] []
 
-getTranslated _isoCode _termType _termUID =
+getTranslated_uncached _isoCode _termType _termUID =
   runDB $
   do
     _langId <- dbGetLanguageId _isoCode
@@ -173,7 +184,7 @@ getTranslated _isoCode _termType _termUID =
           _translationData <- dbGetTranslated' _langId' _termId'
           case _translationData of
             Nothing                      -> return (Just fullUID, formatMessage "translation not found!")
-            Just (Entity _ _translation) -> return (Just $ translatableTranslationTranslation _translation, "OK")
+            Just (Entity _ _translation) -> return (Just $ translatableTranslationTranslation _translation, _OK)
   where fullUID = T.concat [_termType, ":", _termUID]
         formatMessage msg = T.concat [ _isoCode, ":", fullUID, ", ", msg]
 
@@ -183,17 +194,23 @@ dbGetTranslated :: Text -> Text -> Text -> TranslatableHandler ( Maybe Text -- t
                                                                )
 -}
 dbGetTranslated _isoCode _termType _termUID = lift $ getTranslated _isoCode _termType _termUID
+getTranslated _isoCode _termType _termUID = do
+  do
+    txt <- liftIO $ translatableGetCached _isoCode _termType _termUID
+    case txt of
+      Just txt' -> return (Just txt', _OK)
+      Nothing   -> do
+                     translation <- getTranslated_uncached _isoCode _termType _termUID
+                     case translation of
+                       (Just txt'', _) -> liftIO $ translatableSetCached _isoCode _termType _termUID txt''
+                       _               -> return ()
+                     return translation
 
-
-dbSetTranslated :: Text -> Text -> Text -> Text -> TranslatableHandler Text -- "OK" or error
+dbSetTranslated :: Text -> Text -> Text -> Text -> TranslatableHandler Text -- _OK or error
 dbSetTranslated _isoCode _termType _termUID translation = do
+  liftIO $ translatableSetCached _isoCode _termType _termUID translation
   lift $ do
-    canwrite <- canTranslate _termType
-    if not canwrite
-     then
-      return $ T.concat ["You do not have permission to write termType '", _termType]
-     else  
-      runDB $
+    runDB $
       do
         _langId <- dbGetLanguageId _isoCode
         _termId <- dbGetTermId _termType _termUID
@@ -208,6 +225,6 @@ dbSetTranslated _isoCode _termType _termUID translation = do
               if not (isNothing _translation) then delete $ entityKey $ fromJust $ _translation
                                               else return ()
               insert $ TranslatableTranslation _langId' _termId' translation
-              return "OK"
+              return _OK
   where fullUID = T.concat [_termType, ":", _termUID]
         formatMessage msg = T.concat [ _isoCode, ":", fullUID, ", ", msg]

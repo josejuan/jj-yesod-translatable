@@ -21,6 +21,7 @@ library
     other-modules:   Training.JoseJuan.Yesod.Translatable.Routes
                      Training.JoseJuan.Yesod.Translatable.Persistence
                      Training.JoseJuan.Yesod.Translatable.Internal.Cached
+                     Training.JoseJuan.Yesod.Translatable.Internal.AppCache
 
     if flag(dev) || flag(library-only)
         cpp-options:   -DDEVELOPMENT
@@ -47,3 +48,4 @@ library
                  , text                          >= 0.11       && < 0.12
                  , persistent                    >= 1.2        && < 1.3
                  , containers                    >= 0.4.2.1
+                 , stm                           >= 2.3
