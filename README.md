@@ -44,8 +44,12 @@ Use plugin into a scaffolded site is easy (looks like verbose but is very detail
             wget \
               https://github.com/josejuan/jQuery-translatable/raw/master/css/edit.png \
               -O static/css/edit.png
-              
-    1.  [adapted css](https://github.com/josejuan/jQuery-translatable/raw/master/css/style.css "Adapted css"). (eg. `wget https://github.com/josejuan/jQuery-translatable/raw/master/css/style.css -O static/css/style.css`).
+
+    1.  [adapted css](https://github.com/josejuan/jQuery-translatable/raw/master/css/style.css "Adapted css"). Eg.
+
+            wget \
+              https://github.com/josejuan/jQuery-translatable/raw/master/css/style.css \
+              -O static/css/style.css
 
 1.  include styles and jQuery scripts. Eg. adding to "templates/default-layout-wrapper.hamlet" into header:
 
@@ -59,9 +63,17 @@ Use plugin into a scaffolded site is easy (looks like verbose but is very detail
 
         <script src="@{StaticR js_jQuery_translatable_haskell_js}" type="text/javascript">
     
-    these file is on `jj-yesod-translatable` project. (eg. `wget https://github.com/josejuan/jj-yesod-translatable/raw/master/js/jQuery-translatable-haskell.js -O static/js/jQuery-translatable-haskell.js`).
+    these file is on `jj-yesod-translatable` project. Eg.
 
-1.  for testing purposes you can include a complete handler showing translatable widgets in action. (eg. `wget https://github.com/josejuan/jj-yesod-translatable/raw/master/test/TranslatableTest.hs -O Handler/TranslatableTest.hs`).
+        wget \
+          https://github.com/josejuan/jj-yesod-translatable/raw/master/js/jQuery-translatable-haskell.js \
+          -O static/js/jQuery-translatable-haskell.js
+
+1.  for testing purposes you can include a complete handler showing translatable widgets in action. Eg.
+
+        wget \
+          https://github.com/josejuan/jj-yesod-translatable/raw/master/test/TranslatableTest.hs \
+          -O Handler/TranslatableTest.hs
 
 1.  add `jj-yesod-translatable` library reference to your `.cabal` file:
 
