@@ -176,7 +176,7 @@ If you want set a *"translatable text"*, that is, one granted user can translate
       <li>^{translate' "Greetings" "Hello"}
       <li>^{translate' "Greetings" "Hi"}
 
-Now, when *"editing mode"* will be activated (and user will be granted) these texts will be translated at client runtime.
+Now, when *"editing mode"* will be activated (and user will be granted) these texts will be translated (and editable) at client runtime.
 
 #Work in progress
 
