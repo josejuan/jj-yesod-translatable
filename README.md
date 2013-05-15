@@ -106,7 +106,7 @@ Use plugin into a scaffolded site is easy (looks like verbose but is very detail
         import Training.JoseJuan.Yesod.Translatable
         ...
         instance YesodTranslatable App where
-          canTranslate _ = return True
+          canTranslate termType = return $ termType == "TERM_TYPE"
 
 1.  if has included `TranslatableTest.hs` include `Data.Text` reference too
 
