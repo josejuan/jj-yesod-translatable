@@ -182,7 +182,7 @@ Now, when *"editing mode"* will be activated (and user will be granted) these te
 
 You can use `translate'` if you are want to allow edit these texts here.
 
-###Editing mode
+###Editing modes
 
 You can use `enableEditingMode` to **enable** the editing mode. In that mode, translatable contents (rendered using `translate'` version) will be editables at client runtime.
 
@@ -208,6 +208,48 @@ A simple way to grant write to **super users** all translatable contents but onl
            superUser <- isSuperUser  -- Your own function.
            let userTermPrefix = T.concat ["user.", T.pack $ show userId, "."]
            return $ superUser || T.isPrefixOf userTermPrefix termType
+
+###Class `YesodTranslatable` instances
+
+You must define `canTranslate` but you can override other default instance methods:
+
+1.  By default, the *"editing mode"* state is stored into user session but you can override if you want
+
+    -- |Editing mode enabled?
+    editingModeEnabled :: HandlerT master IO Bool
+    editingModeEnabled = getSession >>= return . not . isNothing . M.lookup _EDITING_MODE_SESSION
+
+    -- |Enable editing mode
+    enableEditingMode :: HandlerT master IO ()
+    enableEditingMode = setSession _EDITING_MODE_SESSION "1"
+
+    -- |Disable editing mode
+    disableEditingMode :: HandlerT master IO ()
+    disableEditingMode = deleteSession _EDITING_MODE_SESSION
+
+1.  The active language is taken from Yesod `language` list, you can set what language is active overriding
+
+    -- |Prefered default language
+    isoCode :: HandlerT master IO Text
+    isoCode = languages >>= return . T.take 2 . head
+    
+1.  One user can write into a translatable content if is granted. You can (must) define when certain user can write certain translatable content:
+
+    -- |User can translate some content under certain termType
+    canTranslate :: Text -> HandlerT master IO Bool
+
+1.  By default, all translatable content is cached into memory, you can avoid this behavior (and delegate caching to backend), select only certain `termType` to be cached and so on:
+
+    -- |Used to bypass "inprocess" memory translations cache
+    getCached :: Text -> Text -> Text -> HandlerT master IO (Maybe Text)
+    getCached isoCode termType termUID =
+      liftIO $ translatableGetCached isoCode termType termUID
+
+    -- |Used to bypass "inprocess" memory translations cache
+    setCached :: Text -> Text -> Text -> Text -> HandlerT master IO ()
+    setCached isoCode termType termUID translation =
+      liftIO $ translatableSetCached isoCode termType termUID translation
+
 
 #Work in progress
 
