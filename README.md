@@ -184,7 +184,30 @@ You can use `translate'` if you are want to allow edit these texts here.
 
 ###Editing mode
 
-I'm sleeping now, be patient please...
+You can use `enableEditingMode` to **enable** the editing mode. In that mode, translatable contents (rendered using `translate'` version) will be editables at client runtime.
+
+You can use `disableEditingMode` (default behavior) to **disable** the editing mode.
+
+Really, you only want enable the editing mode to real translator users.
+
+But you want to grant users edit their personal translatable content (eg. their personal profile in some languages, their products descriptions, ...).
+
+In these situations is better not enable editing mode (all web translatable content will be rendered as editable at client runtime), is prefered set some translatable content as *"form controls"*. To do it, you can use `translatableEditable Editable` with that, translatables will be ever editables at client runtime.
+
+###Control write access
+
+Your REST services will be ever public but only certain users can write certain translatable content.
+
+To grant writable access to certain users you can use `canTranslate`. This function return `Bool` if current request can write into a specific `termType` (all `termUID` share the same user access level).
+
+A simple way to grant write to **super users** all translatable contents but only grant write to **simple users** their own translatable contents is define `canTranslate` as
+
+    instance YesodTranslatable App where
+        canTranslate termType = do
+           userId <- getUserId       -- Eg. the current Int32 User entity key
+           superUser <- isSuperUser  -- Your own function.
+           let userTermPrefix = T.concat ["user.", T.pack $ show userId, "."]
+           return $ superUser || T.isPrefixOf userTermPrefix termType
 
 #Work in progress
 
