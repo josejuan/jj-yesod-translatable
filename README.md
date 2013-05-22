@@ -109,7 +109,7 @@ Use plugin into a scaffolded site is easy (looks like verbose but is very detail
         /translatable TranslatableR Translatable getTranslatable
         ...
 
-1.  if has included `TranslatableTest.hs` set testing router too
+1.  if has included `TranslatableTest.hs` set testing routes too
 
         / HomeR GET POST
         ...
