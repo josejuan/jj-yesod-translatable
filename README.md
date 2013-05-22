@@ -162,11 +162,11 @@ Use plugin into a scaffolded site is easy (looks like verbose but is very detail
 
 ###Translation modes and plugin workflow
 
-Plugin can operator in two ways:
+Plugin can operate in two ways:
 
 1. **"translation mode"**, in that mode, plugin write out only pure plain translated text using active language. Final users will see only a normal web page.
 
-1. **"editing mode"**, in that mode, plugin write out specific **HTML5** markup to be able edit text translations. You can grant translate to specific users (the translators). Too, you can restrict who can translate certain texts.
+1. **"editing mode"**, in that mode, plugin write out specific **HTML5** markup to be able edit text translations. You can allow translate to specific users (the translators). Too, you can restrict who can translate certain texts.
 
 ###Translation mode
 
@@ -190,7 +190,7 @@ If you want set a *"translatable text"*, that is, one granted user can translate
 
 Now, when *"editing mode"* will be activated (and user will be granted) these texts will be translated (and editable) at client runtime.
 
-You can use `translate'` if you are want to allow edit these texts here.
+You can use `translate'` if you are want allow edit these texts here.
 
 ###Editing modes
 
@@ -200,7 +200,7 @@ You can use `disableEditingMode` (default behavior) to **disable** the editing m
 
 Really, you only want enable the editing mode to real translator users.
 
-But you want to grant users edit their personal translatable content (eg. their personal profile in some languages, their products descriptions, ...).
+But you want grant users edit their personal translatable content (eg. their personal profile in some languages, their products descriptions, ...).
 
 In these situations is better not enable editing mode (all web translatable content will be rendered as editable at client runtime), is prefered set some translatable content as *"form controls"*. To do it, you can use `translatableEditable Editable` with that, translatables will be ever editables at client runtime.
 
