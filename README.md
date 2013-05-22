@@ -16,7 +16,7 @@ I hope this plugin provides to Yesod Web Framework a possible way to do it.
 
 #How to
 
-(You can see the example translatable project [here](http://37.235.53.89:6504/test "yesod-translatable example project"))
+(You can see the example translatable project [here](http://yesod-translatable.computer-mind.com/test "yesod-translatable example project"))
 
 ##Install `jj-yesod-translatable` package
 
