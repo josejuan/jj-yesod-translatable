@@ -6,6 +6,14 @@
 
 Yesod Web Framework plugin to manage translatable content.
 
+With this plugin you can:
+
+1.  allow users to translate text directly where is placed (in a page using their web browser).
+
+1.  allow you to set (trivially) translatable contents without define any entity or structure. In particular, you can declare translatable content associated to a entity key (eg. **Product**) only defining a unique identifier (eg. *"Product.1234.Name"* ).
+
+1.  use translation at server runtime, at client runtime or some external application (using REST calls).
+
 To get one application internationalized in many languages (English, Spanish, ...) frameworks provide explicit mechanism to translate translatable content.
 
 Most common way is to define a resource with translated content but is not commonly provide a comfortable way that users can translate that content.
